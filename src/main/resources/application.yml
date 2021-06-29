@@ -1,0 +1,63 @@
+server:
+  servlet:
+    context-path: /business-core
+  port: 8771
+
+spring:
+  application:
+    name: business-core
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: ${MYAPP_JDBC_URL:jdbc:postgresql://localhost:5432/registration}
+    username: postgres
+    password: 1111
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    database: postgresql
+    generate-ddl: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+      location: ..
+  kafka:
+    listener:
+      missing-topics-fatal: false
+#  mail:
+#    host: smtp1.kcell.kz
+#    port: 25
+#    smtp:
+#      starttls:
+#        enable: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://127.0.0.1:8761/eureka/}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 80000
+
